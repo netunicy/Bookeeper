@@ -1,0 +1,21 @@
+py -m pip install Django==5.2.4
+
+pip install Django
+
+pip install django-heroku
+
+pip install pylance
+
+pip install whitenoise
+
+pip install Pillow
+
+
+
+python manage.py runserver
+
+django-admin startproject ...
+
+python manage.py startapp main_menu
+
+
