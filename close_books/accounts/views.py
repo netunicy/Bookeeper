@@ -5,7 +5,10 @@ from django.shortcuts import render, redirect
 from .forms import CustomLoginForm
 from .forms import RegisterForm
 from .models import Profile
+from django.views.decorators.csrf import csrf_exempt, csrf_protect,requires_csrf_token
 
+@requires_csrf_token
+@csrf_protect
 def custom_login_view(request):
     form = CustomLoginForm(request.POST or None)
     error = None
@@ -25,7 +28,8 @@ def custom_login_view(request):
 
     return render(request, 'accounts/login.html', {'form': form, 'error': error})
 
-# Register view (δημιουργεί νέο χρήστη)
+@requires_csrf_token
+@csrf_protect
 def register_view(request):
     form = RegisterForm(request.POST or None)
 
