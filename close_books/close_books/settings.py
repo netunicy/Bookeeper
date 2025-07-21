@@ -31,6 +31,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'main_menu.apps.MainMenuConfig',
+    'accounts.apps.AccountsConfig',
 ]
 
 MIDDLEWARE = [
@@ -50,6 +51,7 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [os.path.join (BASE_DIR, 'main_menu/templates/main_menu'),
+                 os.path.join(BASE_DIR, 'templates'),
                  ],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -123,3 +125,8 @@ MEDIA_URL = '/media/'
 #SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+LOGIN_URL = 'login'
+LOGIN_REDIRECT_URL = 'main_menu'
+LOGOUT_REDIRECT_URL = 'login'

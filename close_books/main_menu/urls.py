@@ -7,5 +7,6 @@ app_name = 'main_menu'
 
 urlpatterns = [
     path('', views.main_menu, name='main_menu'),
+
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
