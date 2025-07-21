@@ -1,0 +1,38 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Enter OTP</title>
+    <link rel="stylesheet" href="{% static 'accounts/otp.css' %}">
+</head>
+<body>
+
+<div class="otp-container">
+    <img class="logo" src="https://res.cloudinary.com/hotitu8ux/image/upload/v1753052867/ChatGPT_Image_Jul_21_2025_02_04_13_AM_pdvl73.png" alt="Logo">
+
+    <h2>Enter OTP</h2>
+
+    <form method="post">
+        {% csrf_token %}
+        {{ form.non_field_errors }}
+
+        <label for="id_otp">One-Time Password</label>
+        {{ form.otp }}
+
+        {% if error %}
+            <div class="error-message">{{ error }}</div>
+        {% endif %}
+
+        <button type="submit">Verify</button>
+    </form>
+
+    <div class='resend_links'>
+        <p>
+            <a href="#">Resend code</a><br>
+        </p>
+    </div>
+</div>
+
+</body>
+</html>

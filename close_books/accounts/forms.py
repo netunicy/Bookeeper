@@ -23,3 +23,6 @@ class RegisterForm(forms.ModelForm):
             raise forms.ValidationError("Passwords do not match")
 
         return cleaned_data
+    
+class CustomOtpForm(forms.Form):
+    otp = forms.CharField(label='OTP - One Time Password', max_length=200)

@@ -7,3 +7,10 @@ class Profile(models.Model):
 
     def __str__(self):
         return self.user.username
+    
+class Otp(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    otp = models.CharField(max_length=25)
+
+    def __str__(self):
+        return self.user.username
