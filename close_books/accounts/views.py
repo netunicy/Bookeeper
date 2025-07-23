@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth import login
+from django.contrib.auth import login,logout
 from django.contrib.auth import authenticate, login
 from django.shortcuts import render, redirect
 from .forms import CustomLoginForm
@@ -43,6 +43,7 @@ def custom_login_view(request):
 @requires_csrf_token
 @csrf_protect
 def register_view(request):
+
     form = RegisterForm(request.POST or None)
     if request.method == 'POST' and form.is_valid():
         user = form.save(commit=False)
@@ -75,6 +76,8 @@ def register_view(request):
 
     return render(request, 'accounts/register.html', {'form': form})
 
+@requires_csrf_token
+@csrf_protect
 def check_otp(request):
 
     form = CustomOtpForm(request.POST or None)
@@ -97,7 +100,10 @@ def check_otp(request):
 
     return render(request, 'accounts/otp.html', {'form': form})
 
+@requires_csrf_token
+@csrf_protect
 def resend_otp(request):
+
     user_email = request.session.get('user_email')
     user_id = request.session.get('user_id')
     otp = random.randint(100000, 999999)
@@ -111,3 +117,7 @@ def resend_otp(request):
     
     messages.add_message(request, messages.INFO, "A new OTP has been sent to your email.")
     return redirect('accounts:check_otp')
+
+def logout_view(request):
+    logout(request)
+    return redirect('accounts:login')
