@@ -25,8 +25,16 @@ def custom_login_view(request):
                 password=form.cleaned_data['password']
             )
             if user is not None:
-                login(request, user)
-                return redirect('main_menu:main_menu')
+                otp = random.randint(100000, 999999)
+                email=request.user.email
+                send_mail(
+                    subject="OTP Password",
+                    message="OTP Password is " + str(otp),
+                    from_email="noreply@example.com",
+                    recipient_list=[email],
+                    )
+                Otp.objects.update(otp=otp)
+                return redirect('accounts:check_otp')
             else:
                 error = 'Invalid username or password'
 
@@ -80,9 +88,11 @@ def check_otp(request):
             user = User.objects.get(id=user_id)
             user.is_active = True
             user.save()
+            login(request, user)
             return redirect('main_menu:main_menu')
         else:
-            return render(request, 'accounts/otp.html', {'form': form})
+            messages.add_message(request, messages.INFO, "Invalid OTP code.")
+            return redirect('accounts:check_otp')
             
 
     return render(request, 'accounts/otp.html', {'form': form})
