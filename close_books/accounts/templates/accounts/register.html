@@ -9,12 +9,14 @@
 <body>
   <div class="register-container">
     <img class="logo" src="https://res.cloudinary.com/hotitu8ux/image/upload/v1753052867/ChatGPT_Image_Jul_21_2025_02_04_13_AM_pdvl73.png" alt="Logo">
-
+    
     <h2>Register</h2>
     <form method="post">
         {% csrf_token %}
         
-        {{ form.non_field_errors }}
+        {% for error in form.non_field_errors %}
+          <p style="color: red;">{{ error }}</p>
+        {% endfor %}
 
         <label for="id_first_name">First name</label>
         {{ form.first_name }}

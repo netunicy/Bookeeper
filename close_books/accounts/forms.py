@@ -1,3 +1,4 @@
+import re
 from django import forms
 from django.contrib.auth.models import User
 
@@ -18,11 +19,36 @@ class RegisterForm(forms.ModelForm):
         cleaned_data = super().clean()
         password = cleaned_data.get("password")
         password2 = cleaned_data.get("password2")
+        username = cleaned_data.get("username")
 
-        if password and password2 and password != password2:
-            raise forms.ValidationError("Passwords do not match")
+        if password and password2:
+            if password != password2:
+                raise forms.ValidationError("Passwords do not match.")
+
+            if username and User.objects.filter(username=username).exists():
+                raise forms.ValidationError("This username is already taken. Please choose another one.")
+
+            if len(password) < 9:
+                raise forms.ValidationError("Password must be at least 9 characters long.")
+
+            if not re.search(r'[A-Z]', password):
+                raise forms.ValidationError("Password must contain at least one uppercase letter.")
+
+            if not re.search(r'[a-z]', password):
+                raise forms.ValidationError("Password must contain at least one lowercase letter.")
+
+            if not re.search(r'[0-9]', password):
+                raise forms.ValidationError("Password must contain at least one number.")
+
+            if not re.search(r'[!@#$%^&*(),.?":{}|<>]', password):
+                raise forms.ValidationError("Password must contain at least one special character.")
+
+            if not all(ord(c) < 128 for c in password):
+                raise forms.ValidationError("Password must contain only Latin characters and common ASCII symbols.")
 
         return cleaned_data
+
+
     
 class CustomOtpForm(forms.Form):
     otp = forms.CharField(label='OTP - One Time Password', max_length=200)

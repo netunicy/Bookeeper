@@ -9,6 +9,7 @@ from django.views.decorators.csrf import csrf_exempt, csrf_protect,requires_csrf
 from django.core.mail import send_mail
 import random
 from django.contrib.auth import get_user_model
+from django.contrib import messages
 
 @requires_csrf_token
 @csrf_protect
@@ -25,7 +26,7 @@ def custom_login_view(request):
             )
             if user is not None:
                 login(request, user)
-                return redirect('main_menu')
+                return redirect('main_menu:main_menu')
             else:
                 error = 'Invalid username or password'
 
@@ -35,7 +36,6 @@ def custom_login_view(request):
 @csrf_protect
 def register_view(request):
     form = RegisterForm(request.POST or None)
-
     if request.method == 'POST' and form.is_valid():
         user = form.save(commit=False)
 
@@ -49,7 +49,8 @@ def register_view(request):
 
         phone = form.cleaned_data['phone']
         email = form.cleaned_data['email']
-
+        request.session['user_email'] = email
+        
         otp = random.randint(100000, 999999)
 
         Profile.objects.create(user=user, phone=phone)
@@ -67,6 +68,7 @@ def register_view(request):
     return render(request, 'accounts/register.html', {'form': form})
 
 def check_otp(request):
+
     form = CustomOtpForm(request.POST or None)
 
     if request.method == 'POST' and form.is_valid():
@@ -84,3 +86,18 @@ def check_otp(request):
             
 
     return render(request, 'accounts/otp.html', {'form': form})
+
+def resend_otp(request):
+    user_email = request.session.get('user_email')
+    user_id = request.session.get('user_id')
+    otp = random.randint(100000, 999999)
+    Otp.objects.update(otp=otp)
+    send_mail(
+        subject="OTP Password",
+        message="OTP Password is " + str(otp),
+        from_email="noreply@example.com",
+        recipient_list=[user_email],
+        )
+    
+    messages.add_message(request, messages.INFO, "A new OTP has been sent to your email.")
+    return redirect('accounts:check_otp')

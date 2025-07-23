@@ -51,7 +51,7 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [os.path.join (BASE_DIR, 'main_menu/templates/main_menu'),
-                 os.path.join(BASE_DIR, 'templates'),
+                 os.path.join (BASE_DIR, 'accounts/templates/accounts'),
                  ],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -76,7 +76,7 @@ DATABASES = {
 
 
 
-
+MESSAGE_STORAGE = "django.contrib.messages.storage.cookie.CookieStorage"
 
 AUTH_PASSWORD_VALIDATORS = [
     {

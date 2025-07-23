@@ -10,7 +10,13 @@
 
 <div class="otp-container">
     <img class="logo" src="https://res.cloudinary.com/hotitu8ux/image/upload/v1753052867/ChatGPT_Image_Jul_21_2025_02_04_13_AM_pdvl73.png" alt="Logo">
-
+    {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+                <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
     <h2>Enter OTP</h2>
 
     <form method="post">
@@ -29,7 +35,7 @@
 
     <div class='resend_links'>
         <p>
-            <a href="#">Resend code</a><br>
+            <a href="{% url 'accounts:resend_otp' %}">Resend code</a><br>
         </p>
     </div>
 </div>
