@@ -48,6 +48,10 @@ class RegisterForm(forms.ModelForm):
 
         return cleaned_data
 
+class SendUsernameForm(forms.Form):
+    email = forms.EmailField(label="Email address", max_length=254, widget=forms.EmailInput(attrs={
+        'placeholder': 'Enter your email',
+    }))
 
     
 class CustomOtpForm(forms.Form):

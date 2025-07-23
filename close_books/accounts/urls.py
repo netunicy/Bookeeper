@@ -9,5 +9,7 @@ urlpatterns = [
     path('check_otp/', views.check_otp, name='check_otp'),
     path('resend_otp/', views.resend_otp, name='resend_otp'),
 
+    path('forgot_username/', views.forgot_username, name='forgot_username'),
+
 
 ]

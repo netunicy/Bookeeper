@@ -2,7 +2,8 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import login,logout
 from django.contrib.auth import authenticate, login
 from django.shortcuts import render, redirect
-from .forms import CustomLoginForm
+from django.contrib.auth.models import User
+from .forms import CustomLoginForm,SendUsernameForm
 from .forms import RegisterForm, CustomOtpForm
 from .models import Profile,Otp
 from django.views.decorators.csrf import csrf_exempt, csrf_protect,requires_csrf_token
@@ -121,3 +122,30 @@ def resend_otp(request):
 def logout_view(request):
     logout(request)
     return redirect('accounts:login')
+
+@requires_csrf_token
+@csrf_protect
+def forgot_username(request):
+    if request.method == "POST":
+        form = SendUsernameForm(request.POST)
+        if form.is_valid():
+            email = form.cleaned_data['email']
+            users = User.objects.filter(email=email)
+            if users.exists():
+                for user in users:
+                    username = user.username
+                    text = f'For your account the username is: {username}'
+                    send_mail(
+                        subject="Your Username",
+                        message=text,
+                        from_email="noreply@example.com",
+                        recipient_list=[email],
+                    )
+                return render(request, 'send_username_done.html')
+            else:
+                messages.error(request, 'The email you entered is not associated with any account. Please check the email and try again!')
+        # Εμφανίζεται και το form με λάθη αν έχει
+        return render(request, 'send_username.html', {'form': form})
+    else:
+        form = SendUsernameForm()
+        return render(request, 'send_username.html', {'form': form})

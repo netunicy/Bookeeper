@@ -1,22 +1,25 @@
-{% block content %}
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Email Sent</title>
     <link rel="stylesheet" href="{% static 'accounts/send_username_done.css' %}">
-    <link rel="shortcut icon" type="image/png" href="{% static 'homepage/favicon.ico' %}" >
 </head>
 <body>
-    <a href="{% url 'homepage:homepage' %}" class="btn33">Αρχική Σελίδα</a>
-    <a href="{% url 'accounts:login_user' %}" class="button2">Σύνδεση</a>
-    <h1 style="color:blue;">Επιτυχής Αποστολή Username</h1>
-    <p>Το Username σας θα το λάβετε άμεσα στο Ηλεκτρονικό σας Ταχυδρομείο!</p>
-    
+
+<div class="username-container">
+    <img class="logo" src="https://res.cloudinary.com/hotitu8ux/image/upload/v1753052867/ChatGPT_Image_Jul_21_2025_02_04_13_AM_pdvl73.png" alt="Logo">
+
+    <h2>Username Sent</h2>
+    <p class="success-message">We have sent your username to your email address.</p>
+
+    <div style="text-align: center; margin-top: 2rem;">
+        <a href="{% url 'accounts:login' %}">
+            <button>Back to Login</button>
+        </a>
+    </div>
+</div>
+
 </body>
 </html>
-
-{% endblock content %}
