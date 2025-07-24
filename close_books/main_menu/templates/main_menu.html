@@ -1,8 +1,21 @@
-<p>ddddd</p>
-{% if user.is_authenticated %}
-  <p>Wellcome, {{ user.username }}!</p>
-  <a href="{% url 'accounts:logout' %}">Logout</a>
-{% else %}
-    <a href="{% url 'accounts:login' %}">Login</a>
-    <a href="{% url 'accounts:register' %}">Register</a>
-{% endif %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>Main Page</title>
+    <link rel="stylesheet" href="{% static 'main_menu/main_menu.css' %}">
+  </head>
+  <body>
+    <img class="logo" src="https://res.cloudinary.com/hotitu8ux/image/upload/v1753391970/logo_nds6qt.png" alt="Logo">
+    {% if user.is_authenticated %}
+      <div class='logout_menu'>
+        <p class='wellcome'><span style='color:blue;'>Welcome</span>, {{ user.first_name|title }} {{ user.last_name|title }}!</p>
+        <a class='logout' href="{% url 'accounts:logout' %}">Logout</a>
+      </div>
+    {% else %}
+      <a class="login" href="{% url 'accounts:login' %}">Login</a>
+      <a class="register" href="{% url 'accounts:register' %}">Register</a>
+    {% endif %}
+  </body>
+</html>

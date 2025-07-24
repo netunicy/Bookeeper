@@ -11,6 +11,7 @@ from django.core.mail import send_mail
 import random
 from django.contrib.auth import get_user_model
 from django.contrib import messages
+import mailtrap as mt
 
 @requires_csrf_token
 @csrf_protect
@@ -20,20 +21,32 @@ def custom_login_view(request):
 
     if request.method == 'POST':
         if form.is_valid():
-            user = authenticate(
-                request,
-                username=form.cleaned_data['username'],
-                password=form.cleaned_data['password']
-            )
+            username = form.cleaned_data['username']
+            password = form.cleaned_data['password']
+            
+            user = authenticate(request, username=username, password=password)
+            user_id = user.id
+            request.session['user_id'] = user.id
+
+
             if user is not None:
                 otp = random.randint(100000, 999999)
-                email=request.user.email
-                send_mail(
-                    subject="OTP Password",
-                    message="OTP Password is " + str(otp),
-                    from_email="noreply@example.com",
-                    recipient_list=[email],
+
+                # Απόκτηση του email του χρήστη με ασφάλεια
+                email = user.email
+                request.session['user_email'] = email
+                
+                mail = mt.Mail(
+                        sender=mt.Address(email="hello@cp-accounting.com", name="OTP for Login"),
+                        to=[mt.Address(email=email)],
+                        subject="Your OTP Code for Account Login",
+                        text="OTP Password is " + str(otp),
+                        category="OTP for Login",
                     )
+
+                client = mt.MailtrapClient(token="d496560ab3270434f34280336868cc7d")
+                client.send(mail)
+
                 Otp.objects.update(otp=otp)
                 return redirect('accounts:check_otp')
             else:
@@ -66,12 +79,16 @@ def register_view(request):
         Profile.objects.create(user=user, phone=phone)
         Otp.objects.create(user=user,otp=otp)
         
-        send_mail(
-            subject="OTP Password",
-            message="OTP Password is " + str(otp),
-            from_email="noreply@example.com",
-            recipient_list=[email],
+        mail = mt.Mail(
+            sender=mt.Address(email="hello@cp-accounting.com", name="OTP for Register"),
+            to=[mt.Address(email=email)],
+            subject="Your OTP Code for Account Register",
+            text="OTP Password is " + str(otp),
+            category="OTP for Register",
             )
+
+        client = mt.MailtrapClient(token="d496560ab3270434f34280336868cc7d")
+        client.send(mail)
 
         return redirect('accounts:check_otp')
 
@@ -109,12 +126,16 @@ def resend_otp(request):
     user_id = request.session.get('user_id')
     otp = random.randint(100000, 999999)
     Otp.objects.update(otp=otp)
-    send_mail(
-        subject="OTP Password",
-        message="OTP Password is " + str(otp),
-        from_email="noreply@example.com",
-        recipient_list=[user_email],
+    mail = mt.Mail(
+        sender=mt.Address(email="hello@cp-accounting.com", name="OTP for Login"),
+        to=[mt.Address(email=user_email)],
+        subject="Your OTP Code for Account Login",
+        text="OTP Password is " + str(otp),
+        category="OTP for Login",
         )
+
+    client = mt.MailtrapClient(token="d496560ab3270434f34280336868cc7d")
+    client.send(mail)
     
     messages.add_message(request, messages.INFO, "A new OTP has been sent to your email.")
     return redirect('accounts:check_otp')

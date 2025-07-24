@@ -1,0 +1,99 @@
+/* Reset default browser styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: #ffffff;
+  color: #2f3640;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logo {
+    position: fixed;
+    width: 400px;
+    height: auto;
+    top: 2rem;
+    left: 2rem;
+}
+
+.logout_menu {
+    position: fixed;
+    top: 1rem;
+    right: 1rem;
+    background: #ffffff;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+    text-align: center;
+    width: 90%;
+    max-width: 240px;
+    height: auto;
+    z-index: 1000;
+}
+.login,
+.register {
+  position: fixed;
+  top: 1rem;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  font-weight: bold;
+  text-decoration: none;
+  color: white;
+}
+
+.login {
+    background-color: #00a8ff;
+    color: white;
+    font-size: 20px;
+    right: 9rem;
+}
+
+.register {
+    background-color: #99999a;
+    color: white;
+    font-size: 20px;
+    right: 1rem;
+}
+
+.wellcome {
+  font-size: 1.2rem;
+  margin-bottom: 1.5rem;
+  color: #686868;
+  font-weight: bold;
+}
+
+a {
+  display: inline-block;
+  margin: 0.5rem 1rem;
+  padding: 0.6rem 1.2rem;
+  text-decoration: none;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  font-weight: 500;
+}
+
+
+
+.logout {
+  background-color: #e84118;
+  color: white;
+}
+
+.login:hover {
+  background-color: #0097e6;
+}
+
+.register:hover {
+  background-color: #8c7ae6;
+}
+
+.logout:hover {
+  background-color: #c23616;
+}
